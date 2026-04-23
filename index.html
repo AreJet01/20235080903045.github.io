@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的技术博客 | XXX的前端分享</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+    body {
+      background-color: #f0f2f5;
+      color: #333;
+      line-height: 1.7;
+    }
+    .container {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      grid-template-columns: 3fr 1fr;
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+    /* 头部 */
+    .header {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+      padding: 36px 24px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+    }
+    .header:hover {
+      transform: translateY(-3px);
+    }
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 8px;
+      color: white;
+    }
+    .header p {
+      font-size: 16px;
+      opacity: 0.95;
+    }
+    /* 导航 */
+    .nav {
+      grid-column: 1 / -1;
+      background: #2d3748;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 28px;
+      border-radius: 10px;
+      position: sticky;
+      top: 10px;
+      z-index: 99;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+    .nav a:hover {
+      background: #4a5568;
+      transform: scale(1.05);
+    }
+    /* 主内容 */
+    .main {
+      grid-column: 1 / 2;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+    /* 文章卡片 */
+    .article {
+      margin-bottom: 40px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #eee;
+    }
+    .article:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .article h2 {
+      font-size: 26px;
+      color: #2d3748;
+      margin-bottom: 10px;
+      transition: color 0.3s;
+    }
+    .article h2:hover {
+      color: #4299e1;
+    }
+    .meta {
+      font-size: 14px;
+      color: #718096;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .tag {
+      background: #e6fffa;
+      color: #319795;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    /* 代码块 */
+    pre {
+      background: #f7fafc;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+      border-left: 4px solid #4299e1;
+      font-family: 'Consolas', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    /* 侧边栏 */
+    .sidebar {
+      grid-column: 2 / 3;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      transition: box-shadow 0.3s;
+    }
+    .card:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    }
+    .card h3 {
+      font-size: 18px;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #4299e1;
+      color: #2d3748;
+    }
+    /* 目录 */
+    .toc {
+      list-style: none;
+      font-size: 14px;
+    }
+    .toc li {
+      margin-bottom: 8px;
+      padding-left: 10px;
+      border-left: 2px solid #e2e8f0;
+    }
+    .toc a {
+      color: #4a5568;
+      text-decoration: none;
+    }
+    .toc a:hover {
+      color: #4299e1;
+    }
+    /* 表单 */
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    input:focus {
+      border-color: #4299e1;
+    }
+    button {
+      padding: 10px 16px;
+      background: #2b6cb0;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2c5282;
+    }
+    /* Logo组 */
+    .logo-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      width: 80px;
+      height: 40px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    /* 热门文章 */
+    .hot-list {
+      list-style: none;
+    }
+    .hot-list li {
+      padding: 8px 0;
+      border-bottom: 1px dashed #eee;
+    }
+    .hot-list a {
+      color: #2d3748;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .hot-list a:hover {
+      color: #4299e1;
+    }
+    /* 底部 */
+    .footer {
+      grid-column: 1 / -1;
+      background: #2d3748;
+      color: white;
+      padding: 24px;
+      text-align: center;
+      border-radius: 10px;
+    }
+    .footer p {
+      opacity: 0.8;
+      font-size: 14px;
+    }
+    /* 互动按钮 */
+    .action {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #718096;
+    }
+    .action span {
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .action span:hover {
+      color: #4299e1;
+    }
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .main, .sidebar {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 头部 -->
+    <header class="header">
+      <h1>我的技术博客</h1>
+      <p>专注前端开发 | 分享实战经验、源码解析、学习心得</p>
+    </header>
+
+    <!-- 导航 -->
+    <nav class="nav">
+      <a href="#">🏠 首页</a>
+      <a href="#">📝 全部文章</a>
+      <a href="#">🏷 分类</a>
+      <a href="#">ℹ 关于我</a>
+      <a href="#">📩 订阅</a>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main">
+      <!-- 文章1 -->
+      <article class="article">
+        <h2>深入理解JavaScript闭包：原理与实战</h2>
+        <div class="meta">
+          <span>📅 2030-06-15</span>
+          <span>👨‍💻 XXX</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">前端进阶</span>
+        </div>
+        <h3>🔍 什么是闭包？</h3>
+        <p>闭包是指有权访问另一个函数作用域中变量的函数。它能让内部函数在外部函数执行完毕后，依然保留对外部作用域的引用。</p>
+        <p>闭包是前端面试高频考点，也是模块化、缓存、防抖节流的核心基础。</p>
+        
+        <h3>⚡ 经典应用：计数器</h3>
+        <pre>
+function createCounter(){
+  let count = 0;
+  return function(){
+    count++;
+    return count;
+  }
+}
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+        </pre>
+
+        <h3>✅ 闭包常见用途</h3>
+        <p>1. 实现私有变量与方法封装</p>
+        <p>2. 缓存计算结果，提升性能</p>
+        <p>3. 防抖、节流函数实现</p>
+        <p>4. 模块化开发，避免全局污染</p>
+
+        <div class="action">
+          <span>👍 点赞 (36)</span>
+          <span>💬 评论 (8)</span>
+          <span>⭐ 收藏</span>
+        </div>
+      </article>
+
+      <!-- 文章2 -->
+      <article class="article">
+        <h2>CSS Grid 布局从入门到精通</h2>
+        <div class="meta">
+          <span>📅 2030-06-15</span>
+          <span>👨‍💻 XXX</span>
+          <span class="tag">CSS</span>
+          <span class="tag">布局</span>
+        </div>
+        <p>Grid 是目前最强大的二维布局系统，可以同时控制行和列，轻松实现复杂网页排版。</p>
+        <p>本博客整体布局正是使用 Grid 完成，自适应、响应式、结构清晰。</p>
+        
+        <h3>📌 Grid 核心优势</h3>
+        <p>• 二维布局：同时控制行列</p>
+        <p>• 自适应强：自动填充、自动伸缩</p>
+        <p>• 代码简洁：大幅减少冗余 div 与 CSS</p>
+        <p>• 兼容性好：现代浏览器全覆盖</p>
+
+        <div class="action">
+          <span>👍 点赞 (52)</span>
+          <span>💬 评论 (12)</span>
+          <span>⭐ 收藏</span>
+        </div>
+      </article>
+    </main>
+
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <!-- 作者 -->
+      <div class="card">
+        <h3>👨‍💻 关于作者</h3>
+        <p><strong>XXX</strong></p>
+        <p>全栈开发工程师</p>
+        <p>专注：前端工程化、性能优化、Vue/React实战</p>
+        <p>座右铭：持续学习，分享成长</p>
+      </div>
+
+      <!-- 文章目录 -->
+      <div class="card">
+        <h3>📑 文章目录</h3>
+        <ul class="toc">
+          <li><a href="#">• 什么是闭包？</a></li>
+          <li><a href="#">• 闭包经典案例</a></li>
+          <li><a href="#">• 闭包应用场景</a></li>
+          <li><a href="#">• Grid 布局优势</a></li>
+        </ul>
+      </div>
+
+      <!-- 订阅 -->
+      <div class="card">
+        <h3>🔔 订阅更新</h3>
+        <p>第一时间收到最新文章</p>
+        <input type="email" placeholder="请输入你的邮箱">
+        <button>✅ 立即订阅</button>
+      </div>
+
+      <!-- 热门文章 -->
+      <div class="card">
+        <h3>🔥 热门文章</h3>
+        <ul class="hot-list">
+          <li><a href="#">• Promise 完全使用指南</a></li>
+          <li><a href="#">• Flex 布局最全总结</a></li>
+          <li><a href="#">• Vue3 组合式API实战</a></li>
+          <li><a href="#">• 前端性能优化 20 条</a></li>
+        </ul>
+      </div>
+
+      <!-- 合作伙伴 -->
+      <div class="card">
+        <h3>🤝 合作伙伴</h3>
+        <div class="logo-group">
+          <div class="logo">技术社区</div>
+          <div class="logo">开发者</div>
+          <div class="logo">学习平台</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 底部 -->
+    <footer class="footer">
+      <p>© 2026 我的技术博客 | XXX · 前端实验作品</p>
+      <p>本博客使用 HTML + CSS Grid 构建 | 持续更新中...</p>
+    </footer>
+  </div>
+</body>
+</html>
